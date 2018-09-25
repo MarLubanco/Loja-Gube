@@ -12,6 +12,9 @@ public class Produto {
   private Long id;
 
   @NotNull
+  private String descricao;
+
+  @NotNull
   private String nomeProduto;
 
   @NotNull
@@ -21,11 +24,20 @@ public class Produto {
   @ElementCollection(targetClass=String.class)
   private List<String> tecnologiasUsadas;
 
-  public Produto(Long id, String nomeProduto, MercadoAlvo mercadoAlvo, List<String> tecnologiasUsadas) {
+  public Produto(Long id, String descricao, String nomeProduto, MercadoAlvo mercadoAlvo, List<String> tecnologiasUsadas) {
     this.id = id;
+    this.descricao = descricao;
     this.nomeProduto = nomeProduto;
     this.mercadoAlvo = mercadoAlvo;
     this.tecnologiasUsadas = tecnologiasUsadas;
+  }
+
+  public String getDescricao() {
+    return descricao;
+  }
+
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
   }
 
   public String getNomeProduto() {
@@ -66,6 +78,7 @@ public class Produto {
 
   public static class Builder extends Produto {
 
+    private String descricao;
 
     private String nomeProduto;
 
@@ -75,17 +88,22 @@ public class Produto {
 
 
 
-      public Builder() {
+    public Builder() {
 
-      }
+    }
 
-      public Builder nomeProduto(String nomeProduto) {
-          this.nomeProduto = nomeProduto;
-          return this;
-      }
+    public Builder nomeProduto(String nomeProduto) {
+      this.nomeProduto = nomeProduto;
+      return this;
+    }
 
     public Builder mercadoAlvo(MercadoAlvo mercadoAlvo) {
       this.mercadoAlvo = mercadoAlvo;
+      return this;
+    }
+
+    public Builder descricao(String descricao) {
+      this.descricao = descricao;
       return this;
     }
 
@@ -95,11 +113,12 @@ public class Produto {
     }
 
     public Produto builder() {
-        return new Produto(this);
-      }
+      return new Produto(this);
+    }
   }
 
-    private Produto(Builder builder) {
+  private Produto(Builder builder) {
+    descricao = builder.descricao;
     nomeProduto = builder.nomeProduto;
     mercadoAlvo = builder.mercadoAlvo;
     tecnologiasUsadas = builder.tecnologiasUsadas;

@@ -43,4 +43,9 @@ public class ProdutoService {
      produtoRepository.deleteById(id);
   }
 
+  @GetMapping("busca")
+  public List<Produto> buscaProdutosPorTecnologias(@RequestParam String tecnologia) {
+    return produtoRepository.findByTecnologiasUsadas(tecnologia);
+  }
+
 }
