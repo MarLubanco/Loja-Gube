@@ -1,8 +1,6 @@
 package br.com.gube.Loja.Gube.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -19,7 +17,8 @@ public class Produto {
   @NotNull
   private MercadoAlvo mercadoAlvo;
 
-  @NotNull
+  @Column
+  @ElementCollection(targetClass=String.class)
   private List<String> tecnologiasUsadas;
 
   public Produto(Long id, String nomeProduto, MercadoAlvo mercadoAlvo, List<String> tecnologiasUsadas) {
