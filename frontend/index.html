@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bis2Bis</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+
+    <script>
+        var app = angular.module("myApp", []);
+        app.controller("myCtrl", function ($scope, $http) {
+            const vm = this;
+            vm.produto = {}
+            vm.produtos = [];
+            getAll();
+            vm.save = save
+            vm.produtoEnvio = {
+                nomeProduto : 'masdasa',
+                descricao : 'sda',
+                mercadoAlvo : 'PROGRAMADORES',
+                tecnologiasUsadas : [
+                    'java' ,'java 2'
+                ]
+            }
+
+            function getAll() {
+                $http({
+                    method: 'GET',
+                    url: 'http://localhost:8080/produtos'
+                }).then(
+                    res => {
+                        vm.produtos = res.data
+                    });
+
+            }
+
+            function save() {
+                $http({
+                    method: 'POST',
+                    url: 'http://localhost:8080/produtos',
+                    data: { 'produto': vm.produtoEnvio },
+                    headers : {'Content-Type': 'application/json'}
+                }).then(
+                    res =>  {
+                        vm.titulo = "Sucesso"
+                        vm.mensagem = "Sucesso, o produto foi salvo"
+                        $('#myModal').on('shown.bs.modal', function () {
+                        $('#myInput').trigger('focus')
+                        })
+                    },
+                    error => {
+                        vm.titulo = "Ocorreu um problema"
+                        vm.mensagem = "O produto não foi salvo"
+                        $('#myModal').on('shown.bs.modal', function () {
+                        $('#myInput').trigger('focus')
+                        })
+                    }
+                );
+            }
+        });
+    </script>
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1>Loja Gube</h1>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" placeholder="Busca por tecnologia">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Cadastrar Produto</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Nome Produto</th>
+                                <th>Descrição</th>
+                                <th>Mercado Alvo</th>
+                                <th>Tecnologias Usadas</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr ng-repeat="produtoS in this.produtos">
+                                <td>{{produtoS.nomeProduto}}</td>
+                                <td>{{produtoS.descricao}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-app="produt in vm.produtos">
+                        {{produt.nomeProduto}}
+                    </div>
+                </div>
+
+
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title"><strong>Novo Produto</strong></h2>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form name="form">
+                            <div class="modal-body">
+                                <label>Nome Produto</label>
+                                <input class="form-control" name="nome" ng-model="vm.produto.nomeProduto" placeholder="Nome produto" required>
+                                <h6 style="color: red" ng-show="form.nome.$touched && form.nome.$invalid">Esse campo é obrigatório</h6>
+                                <br>
+                                <label>Descrição</label>
+                                <input class="form-control" name="descricao" ng-model="vm.produto.descricao" placeholder="Descrição">
+                                <h6 style="color: red" ng-show="form.descricao.$touched && form.descricao.$invalid">Esse campo é obrigatório</h6>
+                                <br>
+                                <label>Mercado Alvo</label>
+                                <input class="form-control" name="mercado" ng-model="vm.produto.mercadoAlvo" placeholder="Mercado Alvo">
+                                <h6 style="color: red" ng-show="form.mercado.$touched && form.mercado.$invalid">Esse campo é obrigatório</h6>
+                                <br>
+                                <label>Tecnologias Usadas</label>
+                                <input class="form-control" name="tec" ng-model="vm.produto.tecnologiasUsadas" placeholder="Tecnologias Usadas">
+                                <h6 style="color: red" ng-show="form.tec.$touched && form.tec.$invalid">Esse campo é obrigatório</h6>
+                            </div>
+                            </form>
+                            <div class="modal-footer">
+                                <button type="button" ng-click="vm.save()" class="btn btn-primary">Salvar</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">{{vm.titulo}}</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>{{vm.mensagem}}</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary">Ok</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
