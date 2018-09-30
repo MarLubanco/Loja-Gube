@@ -24,6 +24,10 @@ public class Produto {
   @ElementCollection(targetClass=String.class)
   private List<String> tecnologiasUsadas;
 
+  public Produto() {
+
+  }
+
   public Produto(Long id, String descricao, String nomeProduto, MercadoAlvo mercadoAlvo, List<String> tecnologiasUsadas) {
     this.id = id;
     this.descricao = descricao;
@@ -64,10 +68,6 @@ public class Produto {
     this.tecnologiasUsadas = tecnologiasUsadas;
   }
 
-  public Produto() {
-
-  }
-
   public Long getId() {
     return id;
   }
@@ -76,51 +76,5 @@ public class Produto {
     this.id = id;
   }
 
-  public static class Builder extends Produto {
 
-    private String descricao;
-
-    private String nomeProduto;
-
-    private MercadoAlvo mercadoAlvo;
-
-    private List<String> tecnologiasUsadas;
-
-
-
-    public Builder() {
-
-    }
-
-    public Builder nomeProduto(String nomeProduto) {
-      this.nomeProduto = nomeProduto;
-      return this;
-    }
-
-    public Builder mercadoAlvo(MercadoAlvo mercadoAlvo) {
-      this.mercadoAlvo = mercadoAlvo;
-      return this;
-    }
-
-    public Builder descricao(String descricao) {
-      this.descricao = descricao;
-      return this;
-    }
-
-    public Builder tecnologiasUsadas(List<String> tecnologiasUsadas) {
-      this.tecnologiasUsadas = tecnologiasUsadas;
-      return this;
-    }
-
-    public Produto builder() {
-      return new Produto(this);
-    }
-  }
-
-  private Produto(Builder builder) {
-    descricao = builder.descricao;
-    nomeProduto = builder.nomeProduto;
-    mercadoAlvo = builder.mercadoAlvo;
-    tecnologiasUsadas = builder.tecnologiasUsadas;
-  }
 }
